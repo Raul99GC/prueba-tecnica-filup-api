@@ -7,7 +7,7 @@ class Server {
 
     this.paths = {
       server: '/',
-      tablePdf: '/api/v1/pokemonPdf'
+      pokemon: '/api/v1/pokemon'
     }
 
     // Middlewares
@@ -22,6 +22,7 @@ class Server {
 
   routes () {
     this.app.use(this.paths.server, require('../routes/server.routes'))
+    this.app.use(this.paths.pokemon, require('../routes/pokemon.routes'))
   }
 
   middleware () {
