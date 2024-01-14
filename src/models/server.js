@@ -7,7 +7,7 @@ class Server {
 
     this.paths = {
       server: '/',
-      tablePdf: '/pokemonPdf'
+      tablePdf: '/api/v1/pokemonPdf'
     }
 
     // Middlewares
@@ -15,6 +15,9 @@ class Server {
 
     // Rutas de mi aplicacion
     this.routes()
+
+    // Conectar Database
+    this.database()
   }
 
   routes () {
@@ -28,6 +31,10 @@ class Server {
     // Analiza JSON en el cuerpo de la solicitud
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
+  }
+
+  database () {
+    require('../configs/database')
   }
 
   listen () {
