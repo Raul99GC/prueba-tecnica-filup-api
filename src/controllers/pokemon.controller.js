@@ -16,8 +16,6 @@ const getAllPokemons = async ({ limit, page, name }) => {
 
     let pokemonsLinks = data.results.sort((a, b) => a.name.localeCompare(b.name))
 
-    console.log({ name })
-
     if (name) {
       pokemonsLinks = pokemonsLinks.filter(pokemon => pokemon.name.includes(name))
     }
