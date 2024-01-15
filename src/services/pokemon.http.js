@@ -1,6 +1,6 @@
 const { request } = require('express')
 
-const { getAllPokemons, getPokemonByIdOrName } = require('../controllers/pokemon.controller')
+const { getAllPokemons, getPokemonByIdOrName, generatePokemonPdf, savePokemonInDb } = require('../controllers/pokemon.controller')
 
 const getAll = async (req, res) => {
   try {
@@ -44,6 +44,34 @@ const getAll = async (req, res) => {
   }
 }
 
+const generatePdf = async (req, res) => {
+  const { id } = req.body
+
+  try {
+    const { data } = await getPokemonByIdOrName({ pokemonId: id })
+
+    const params = {
+      img: data?.sprites.other['official-artwork'].front_default,
+      name: data?.name,
+      hp: data?.stats[0].base_stat,
+      experience: data?.base_experience,
+      type: data?.types[1]?.type.name,
+      stats: data?.stats.slice(0, 4)
+    }
+
+    const pdf = await generatePokemonPdf(params)
+
+    await savePokemonInDb(params)
+
+    res.setHeader('Content-Type', 'application/pdf')
+    res.status(200)
+    res.send(pdf)
+  } catch (error) {
+    console.log({ error })
+    res.status(404).send('Bad Request')
+  }
+}
+
 const constByIdOrName = (req = request, res) => {
   const { id } = req.params
 
@@ -58,5 +86,6 @@ const constByIdOrName = (req = request, res) => {
 
 module.exports = {
   getAll,
-  constByIdOrName
+  constByIdOrName,
+  generatePdf
 }
