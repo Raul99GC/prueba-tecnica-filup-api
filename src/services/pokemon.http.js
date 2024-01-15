@@ -55,7 +55,7 @@ const generatePdf = async (req, res) => {
       name: data?.name,
       hp: data?.stats[0].base_stat,
       experience: data?.base_experience,
-      type: data?.types[1]?.type.name,
+      type: data?.types[0]?.type.name,
       stats: data?.stats.slice(0, 4)
     }
 
