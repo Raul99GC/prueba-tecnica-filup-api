@@ -1,9 +1,9 @@
-const { getAll, constByIdOrName } = require('../services/pokemon.http')
+const { getAll, constByIdOrName, generatePdf } = require('../services/pokemon.http')
 
 const router = require('express').Router()
 
 router.get('/', getAll)
-router.post('/')
+router.post('/', generatePdf)
 
 router.get('/:id', constByIdOrName)
 
