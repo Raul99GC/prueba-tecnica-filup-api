@@ -50,3 +50,4 @@ npm  run
 
 ### `Archivos de configuracion: variables de entorno (.env)`
 - Hay un example.env de muestra.
+- El puerto se aconseja dejarlo en el 8080
