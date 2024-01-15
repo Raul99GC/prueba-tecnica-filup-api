@@ -1,4 +1,6 @@
-const { getAllPokemons } = require('../controllers/pokemon.controller')
+const { request } = require('express')
+
+const { getAllPokemons, getPokemonByIdOrName } = require('../controllers/pokemon.controller')
 
 const getAll = async (req, res) => {
   try {
@@ -42,6 +44,19 @@ const getAll = async (req, res) => {
   }
 }
 
+const constByIdOrName = (req = request, res) => {
+  const { id } = req.params
+
+  getPokemonByIdOrName({ pokemonId: id })
+    .then(({ data }) => {
+      res.status(200).json({ ...data })
+    })
+    .catch(() => {
+      res.status(400).send('Valor invalido')
+    })
+}
+
 module.exports = {
-  getAll
+  getAll,
+  constByIdOrName
 }
