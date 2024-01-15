@@ -24,16 +24,27 @@ const getAllPokemons = async ({ limit, page, name }) => {
     if (name) {
       pokemonsLinks = pokemonsLinks.filter(pokemon => pokemon.name.includes(name))
     }
+    console.log({ pokemonsLinks })
     const totalCount = pokemonsLinks.length
 
     const startIndex = (page - 1) * limit
-    const endIndex = startIndex + limit ? limit : totalCount
+    const endIndex = startIndex + (limit || totalCount)
 
     const selectedPokemonsLinks = pokemonsLinks.slice(startIndex, endIndex)
 
+    console.log({ selectedPokemonsLinks })
+
     const pokemons = await Promise.all(selectedPokemonsLinks.map(async (pokemon) => {
       const response = await axios.get(pokemon.url)
-      return response.data
+      return {
+        img: response.data?.sprites.other['official-artwork'].front_default,
+        name: response.data?.name,
+        hp: response.data?.stats[0].base_stat,
+        experience: response.data?.base_experience,
+        type: response.data?.types[0]?.type.name,
+        stats: response.data?.stats.slice(0, 4),
+        id: response.data?.id
+      }
     }))
 
     const totalPages = Math.ceil(pokemonsLinks.length / limit)
