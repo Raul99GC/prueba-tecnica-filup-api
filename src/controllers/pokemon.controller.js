@@ -1,4 +1,7 @@
 const axios = require('axios')
+const htmlPdf = require('html-pdf')
+const Handlebars = require('handlebars')
+const fs = require('fs')
 
 /**
  * Obtiene una lista paginada de pokémons desde la PokeAPI.
@@ -63,7 +66,29 @@ const getPokemonByIdOrName = async ({ pokemonId }) => {
   }
 }
 
+const generatePokemonPdf = ({ img, name, hp, experience, type, stats }) => {
+  const options = { format: 'Letter' }
+  const source = fs.readFileSync(process.cwd() + '/src/templates/pokemon.hbs', 'utf8')
+
+  const template = Handlebars.compile(source)
+
+  const data = { img, name, hp, experience, type, stats }
+
+  const html = template(data)
+
+  return new Promise((resolve, reject) => {
+    htmlPdf.create(html, options).toBuffer(function (err, buffer) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(buffer)
+      }
+    })
+  })
+}
+
 module.exports = {
   getAllPokemons,
-  getPokemonByIdOrName
+  getPokemonByIdOrName,
+  generatePokemonPdf
 }
