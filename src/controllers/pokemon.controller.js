@@ -22,7 +22,7 @@ const getAllPokemons = async ({ limit, page, name }) => {
     const totalCount = pokemonsLinks.length
 
     const startIndex = (page - 1) * limit
-    const endIndex = startIndex + limit
+    const endIndex = startIndex + limit ? limit : totalCount
 
     const selectedPokemonsLinks = pokemonsLinks.slice(startIndex, endIndex)
 

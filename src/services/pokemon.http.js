@@ -6,7 +6,7 @@ const getAll = async (req, res) => {
   try {
     const { limit = 0, page = 1, name = '' } = req.query
 
-    if (isNaN(limit) || isNaN(page) || limit <= 0 || page <= 0) {
+    if (isNaN(limit) || isNaN(page) || page <= 0) {
       res.status(404).send('Bad Request')
       return
     }
