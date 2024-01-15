@@ -42,6 +42,28 @@ const getAllPokemons = async ({ limit, page, name }) => {
   }
 }
 
+/**
+ * Obtiene información de un Pokémon por su ID.
+ *
+ * @param {Object} options - Opciones para la búsqueda del Pokémon.
+ * @param {number} options.pokemonId - ID or Nombre del Pokémon que se desea obtener.
+ * @returns {Promise<Object>} - Una promesa que se resuelve con los datos del Pokémon o se rechaza con un objeto de error.
+ *
+ */
+const getPokemonByIdOrName = async ({ pokemonId }) => {
+  try {
+    const { data, status } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
+
+    return {
+      data,
+      status
+    }
+  } catch (err) {
+    throw new Error(err.response.status)
+  }
+}
+
 module.exports = {
-  getAllPokemons
+  getAllPokemons,
+  getPokemonByIdOrName
 }
