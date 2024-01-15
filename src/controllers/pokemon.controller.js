@@ -3,6 +3,8 @@ const htmlPdf = require('html-pdf')
 const Handlebars = require('handlebars')
 const fs = require('fs')
 
+const Pokemon = require('../models/pokemons.model')
+
 /**
  * Obtiene una lista paginada de pokémons desde la PokeAPI.
  * @param {Object} options - Opciones para la consulta.
@@ -87,8 +89,27 @@ const generatePokemonPdf = ({ img, name, hp, experience, type, stats }) => {
   })
 }
 
+const savePokemonInDb = async ({ img, name, hp, experience, type, stats }) => {
+  try {
+    const newPokemon = new Pokemon({
+      name,
+      img,
+      hp,
+      experience,
+      type,
+      stats
+    })
+
+    const response = await newPokemon.save()
+    return response
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 module.exports = {
   getAllPokemons,
   getPokemonByIdOrName,
-  generatePokemonPdf
+  generatePokemonPdf,
+  savePokemonInDb
 }
